@@ -9,13 +9,15 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
-  filesystem_picker: ^3.1.0
+  file_picker: ^5.2.0+1
   flutter:
     sdk: flutter
   flutter_svg: ^1.1.5
   get: ^4.6.5
   go_router: ^5.0.2
   line_awesome_flutter: ^2.0.0
+  path_provider: ^2.0.11
+  permission_handler: ^10.0.2
 
 dev_dependencies:
   flutter_test:

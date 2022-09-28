@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:path/path.dart';
 import 'package:promptme/core/theme/theme_color.dart';
 import 'package:promptme/core/widgets/x_empty_widget.dart';
 import 'package:promptme/core/widgets/x_error_widget.dart';
@@ -17,10 +18,10 @@ class ProjectsPage extends GetView<ProjectsController> {
         backgroundColor: Get.theme.bottomAppBarColor,
         title: Obx(() {
           return Text(
-            controller.directory != null
+            controller.workingDirPath.value == ''
                 ? 'Aucun répertoire sélectionné'
-                : controller.directory!.value.path,
-            style: Get.textTheme.headline4,
+                : basename(controller.workingDirPath.value),
+            style: Get.textTheme.headline4!.copyWith(color: black),
           );
         }),
         centerTitle: true,
@@ -29,9 +30,12 @@ class ProjectsPage extends GetView<ProjectsController> {
         (status) => Obx(
           () {
             return controller.projects.isNotEmpty
-                ? ProjectList(
-                    controller.projects,
-                    onTap: (index) => controller.startProject(index),
+                ? Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: ProjectList(
+                      controller.projects,
+                      onTap: (index) => controller.startProject(index),
+                    ),
                   )
                 : const XEmptyWidget(message: 'Aucun projet ajouté');
           },
@@ -44,7 +48,7 @@ class ProjectsPage extends GetView<ProjectsController> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Get.theme.colorScheme.secondary,
-        onPressed: () => controller.findDirectory(),
+        onPressed: () => controller.findDirectory(context),
         child: const Icon(
           LineAwesomeIcons.folder_plus,
           color: white,

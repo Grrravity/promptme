@@ -17,9 +17,11 @@ class PromptMeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       locale: Get.deviceLocale,
       initialRoute: Routes.initialRoute,
+      getPages: Nav.routes,
       defaultTransition: Transition.noTransition,
       theme: myTheme,
       darkTheme: myDarktheme,
+      themeMode: ThemeMode.light,
     );
   }
 }
