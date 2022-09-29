@@ -19,31 +19,43 @@ class ProjectList extends StatelessWidget {
             ['...'],
           );
         return ListTile(
-          title: Text(
-            '${projects[index].name} - ${projects[index].hasYaml ?? false ? 'Slides attendues : ${projects[index].slides} - mp3 générés : ${projects[index].slidesDone}' : 'Aucun yaml présent'}',
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Get.textTheme.headline5,
+          title: RichText(
+            text: TextSpan(
+              text: projects[index].name,
+              style: Get.textTheme.headline5,
+              children: <TextSpan>[
+                if (projects[index].hasYaml ?? false)
+                  TextSpan(
+                    text: '   -   Contenu : ',
+                    style: Get.textTheme.subtitle1,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text:
+                            '${projects[index].slidesDone} mp3 / ${projects[index].slides} textes',
+                        style: Get.textTheme.subtitle2,
+                      ),
+                    ],
+                  )
+                else
+                  TextSpan(
+                    text: '   -   Aucun yaml présent',
+                    style: Get.textTheme.subtitle1,
+                  )
+              ],
+            ),
           ),
-          subtitle: Text(
-            partialPath.join('/'),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Get.textTheme.caption,
+          subtitle: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              partialPath.join('/'),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: Get.textTheme.bodyText2,
+            ),
           ),
           leading: Icon(
-            (projects[index].hasYaml ?? false)
-                ? (projects[index].isDone ?? false)
-                    ? (projects[index].slides == projects[index].slidesDone)
-                        ? Icons.replay
-                        : Icons.play_arrow_rounded
-                    : Icons.play_arrow_rounded
-                : Icons.play_disabled,
-            color: (projects[index].hasYaml ?? false)
-                ? (projects[index].isDone ?? false)
-                    ? orangeChart
-                    : green
-                : primary,
+            getIcon(projects[index]),
+            color: getColor(projects[index]),
             size: 40,
           ),
           enabled: projects[index].hasYaml ?? false,
@@ -56,5 +68,29 @@ class ProjectList extends StatelessWidget {
         );
       },
     );
+  }
+
+  IconData getIcon(ProjectsSnapshot project) {
+    if (project.hasYaml ?? false) {
+      if ((project.isDone ?? false) && project.slides == project.slidesDone) {
+        return Icons.replay;
+      } else {
+        return Icons.play_arrow_rounded;
+      }
+    } else {
+      return Icons.play_disabled;
+    }
+  }
+
+  Color getColor(ProjectsSnapshot project) {
+    if (project.hasYaml ?? false) {
+      if (project.isDone ?? false) {
+        return orangeChart;
+      } else {
+        return green;
+      }
+    } else {
+      return primary;
+    }
   }
 }

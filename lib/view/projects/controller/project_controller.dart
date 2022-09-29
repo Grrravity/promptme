@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
+import 'package:promptme/core/routes/route.dart';
 import 'package:promptme/domain/entities/projects.dart';
 import 'package:yaml/yaml.dart';
 
@@ -29,8 +30,9 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
     super.onReady();
   }
 
-  void startProject(int index) {
-    print('hh');
+  void startProject(String path) {
+    // ignore: inference_failure_on_function_invocation
+    Get.toNamed(Routes.projects + Routes.prepare, arguments: {'path': path});
   }
 
   void retry() {
@@ -49,6 +51,7 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
   }
 
   Future<void> getProjectList() async {
+    change(null, status: RxStatus.loading());
     if (workingDirPath.value != '') {
       final directory = Directory(workingDirPath.value);
       final exist = await directory.exists();
@@ -56,6 +59,7 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
         projects.value = await getContent(directory);
       }
     }
+    change(null, status: RxStatus.success());
   }
 
   Future<List<ProjectsSnapshot>> getContent(
@@ -131,7 +135,7 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
   }
 
   int countInput(List<ProjectsSnapshot> content) {
-    int count = 0;
+    var count = 0;
     if (content.any((element) => element.name.endsWith('.yaml'))) {
       try {
         final yamlElement =
@@ -140,9 +144,9 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
         final file = File(yamlElement.entity.path);
         final yamlString = file.readAsStringSync();
 
-        final _yamlDocument = loadYamlDocument(yamlString);
-        final _yamlNode = _yamlDocument.contents;
-        final yaml = _yamlNode.value as YamlMap;
+        final yamlDoc = loadYamlDocument(yamlString);
+        final yamlContent = yamlDoc.contents;
+        final yaml = yamlContent.value as YamlMap;
 
         final yamlList = yaml['sections'] as YamlList;
         count = yamlList.length;

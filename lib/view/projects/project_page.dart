@@ -20,7 +20,7 @@ class ProjectsPage extends GetView<ProjectsController> {
           return Text(
             controller.workingDirPath.value == ''
                 ? 'Aucun répertoire sélectionné'
-                : basename(controller.workingDirPath.value),
+                : 'Dossier actuel : ${basename(controller.workingDirPath.value)}',
             style: Get.textTheme.headline4!.copyWith(color: black),
           );
         }),
@@ -31,10 +31,12 @@ class ProjectsPage extends GetView<ProjectsController> {
           () {
             return controller.projects.isNotEmpty
                 ? Padding(
-                    padding: const EdgeInsets.all(18),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 4),
                     child: ProjectList(
                       controller.projects,
-                      onTap: (index) => controller.startProject(index),
+                      onTap: (index) => controller
+                          .startProject(controller.projects[index].entity.path),
                     ),
                   )
                 : const XEmptyWidget(
@@ -48,14 +50,28 @@ class ProjectsPage extends GetView<ProjectsController> {
           onRetry: () => controller.retry(),
         ),
       ),
-      floatingActionButton: Padding(
-        padding: const EdgeInsets.only(right: 20, bottom: 20),
-        child: FloatingActionButton(
-          backgroundColor: Get.theme.colorScheme.secondary,
-          onPressed: () => controller.findDirectory(context),
-          child: const Icon(
-            LineAwesomeIcons.folder_plus,
-            color: white,
+      floatingActionButton: controller.obx(
+        (status) => Padding(
+          padding: const EdgeInsets.only(right: 20, bottom: 20),
+          child: FloatingActionButton(
+            backgroundColor: Get.theme.colorScheme.secondary,
+            onPressed: () => controller.findDirectory(context),
+            child: const Icon(
+              LineAwesomeIcons.folder_plus,
+              color: white,
+            ),
+          ),
+        ),
+        onLoading: const SizedBox.shrink(),
+        onError: (e) => Padding(
+          padding: const EdgeInsets.only(right: 20, bottom: 20),
+          child: FloatingActionButton(
+            backgroundColor: Get.theme.colorScheme.secondary,
+            onPressed: () => controller.findDirectory(context),
+            child: const Icon(
+              LineAwesomeIcons.folder_plus,
+              color: white,
+            ),
           ),
         ),
       ),
