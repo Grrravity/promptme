@@ -20,7 +20,8 @@ class PreparePage extends GetView<PrepareController> {
             Icons.arrow_back,
             color: black,
           ),
-          onPressed: () => Get.back(),
+          // ignore: inference_failure_on_generic_invocation
+          onPressed: Get.back,
         ),
         backgroundColor: Get.theme.bottomAppBarColor,
         title: Obx(() {

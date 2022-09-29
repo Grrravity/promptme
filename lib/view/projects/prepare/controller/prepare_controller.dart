@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_dynamic_calls, avoid_slow_async_io
+
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';

@@ -10,7 +10,11 @@ class PrompteurPreview extends StatelessWidget {
     return Text(
       text,
       style: Get.theme.primaryTextTheme.headline5!.copyWith(
-          wordSpacing: 4, letterSpacing: 4, fontFamily: 'Roboto', height: 1.3),
+        wordSpacing: 4,
+        letterSpacing: 4,
+        fontFamily: 'Roboto',
+        height: 1.3,
+      ),
     );
   }
 }
