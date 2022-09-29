@@ -37,7 +37,9 @@ class ProjectsPage extends GetView<ProjectsController> {
                       onTap: (index) => controller.startProject(index),
                     ),
                   )
-                : const XEmptyWidget(message: 'Aucun projet ajouté');
+                : const XEmptyWidget(
+                    message: 'Aucun projet ajouté',
+                  );
           },
         ),
         onLoading: const Center(child: CircularProgressIndicator()),
@@ -46,12 +48,15 @@ class ProjectsPage extends GetView<ProjectsController> {
           onRetry: () => controller.retry(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Get.theme.colorScheme.secondary,
-        onPressed: () => controller.findDirectory(context),
-        child: const Icon(
-          LineAwesomeIcons.folder_plus,
-          color: white,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 20, bottom: 20),
+        child: FloatingActionButton(
+          backgroundColor: Get.theme.colorScheme.secondary,
+          onPressed: () => controller.findDirectory(context),
+          child: const Icon(
+            LineAwesomeIcons.folder_plus,
+            color: white,
+          ),
         ),
       ),
     );

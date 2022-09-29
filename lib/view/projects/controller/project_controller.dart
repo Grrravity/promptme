@@ -7,9 +7,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
+import 'package:promptme/domain/entities/projects.dart';
+import 'package:yaml/yaml.dart';
 
 class ProjectsController extends GetxController with StateMixin<RxStatus> {
-  RxList<FileSystemEntity> projects = <FileSystemEntity>[].obs;
+  RxList<ProjectsSnapshot> projects = <ProjectsSnapshot>[].obs;
   RxString workingDirPath = ''.obs;
 
   @override
@@ -27,7 +29,9 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
     super.onReady();
   }
 
-  void startProject(int index) {}
+  void startProject(int index) {
+    print('hh');
+  }
 
   void retry() {
     onInit();
@@ -54,7 +58,7 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
     }
   }
 
-  Future<List<FileSystemEntity>> getContent(
+  Future<List<ProjectsSnapshot>> getContent(
     Directory directory, {
     bool recursive = true,
   }) async {
@@ -65,24 +69,87 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
     subFolders
       ..sort((a, b) => basename(b.path).compareTo(basename(a.path)))
       ..removeWhere((element) => basename(element.path).startsWith('.'));
-    return recursive ? filterContent(subFolders) : Future.value(subFolders);
+    return recursive
+        ? filterContent(subFolders)
+        : Future.value(
+            subFolders
+                .asMap()
+                .entries
+                .map((e) => ProjectsSnapshot.fromFileEntity(e.value))
+                .toList(),
+          );
   }
 
-  Future<List<FileSystemEntity>> filterContent(
+  Future<List<ProjectsSnapshot>> filterContent(
     List<FileSystemEntity> subFolders,
   ) async {
-    final finalList = <FileSystemEntity>[];
+    final finalList = <ProjectsSnapshot>[];
     await Future.forEach(subFolders, (folder) async {
       final directory = Directory(folder.path);
 
       final exist = await directory.exists();
       if (exist) {
         final content = await getContent(directory, recursive: false);
-        if (content.any((element) => element.path.contains('.yaml'))) {
-          finalList.add(folder);
-        }
+
+        finalList.add(
+          ProjectsSnapshot.fromFileEntity(folder).copyWith(
+            hasYaml: checkYaml(content),
+            isDone: checkDone(content),
+            slidesDone: countOutput(content),
+            slides: countInput(content),
+          ),
+        );
       }
     });
     return finalList;
+  }
+
+  bool checkYaml(List<ProjectsSnapshot> content) {
+    if (content.any((element) => element.name.endsWith('.yaml'))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool checkDone(List<ProjectsSnapshot> content) {
+    if (content.any((element) => element.name.endsWith('.aup3'))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  int countOutput(List<ProjectsSnapshot> content) {
+    var count = 0;
+    for (final element in content) {
+      if (element.name.endsWith('.mp3')) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  int countInput(List<ProjectsSnapshot> content) {
+    int count = 0;
+    if (content.any((element) => element.name.endsWith('.yaml'))) {
+      try {
+        final yamlElement =
+            content.firstWhere((element) => element.name.endsWith('.yaml'));
+
+        final file = File(yamlElement.entity.path);
+        final yamlString = file.readAsStringSync();
+
+        final _yamlDocument = loadYamlDocument(yamlString);
+        final _yamlNode = _yamlDocument.contents;
+        final yaml = _yamlNode.value as YamlMap;
+
+        final yamlList = yaml['sections'] as YamlList;
+        count = yamlList.length;
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    return count;
   }
 }
