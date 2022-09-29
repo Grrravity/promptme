@@ -20,7 +20,7 @@ class ProjectList extends StatelessWidget {
           );
         return ListTile(
           title: Text(
-            '${projects[index].name} - Slides attendues : ${projects[index].slides} - mp3 générés : ${projects[index].slidesDone}',
+            '${projects[index].name} - ${projects[index].hasYaml ?? false ? 'Slides attendues : ${projects[index].slides} - mp3 générés : ${projects[index].slidesDone}' : 'Aucun yaml présent'}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: Get.textTheme.headline5,
