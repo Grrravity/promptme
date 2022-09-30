@@ -1,16 +1,44 @@
-# promptme
+# Promptme
 
-A new Flutter project.
+Flutter project to prompt yaml inputs for audio recording and give cool features like :
+- Play / Pause / Jump back / Jump forth at any time
+- Edit prompted text on pause (WIP)
+- Export modifications (WIP)
+- Record audio directly from the app (WIP)
 
-## Getting Started
+## Requirements
 
-This project is a starting point for a Flutter application.
+1. A folder structure like this where you put your yaml files (on your machine):
 
-A few resources to get you started if this is your first Flutter project:
+```
+AudioProjectMainFolder
+│  ...
+│
+└───FirstProjectFolder
+│   │   audiocontent.yaml
+│   │   audioOutput1.mp3
+│   │   audioOutput2.mp3
+│   │   ...
+│   
+└───SecondProjectFolder
+    │   audiocontent.yaml
+    │   audioOutput1.mp3
+    │   ...
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. A yaml file containing this keys (must not be nested into a parent) :
+
+```yaml
+---
+sections:
+    text: "blablabla"
+
+```
+
+
+## Getting started
+
+Pull it and run `Flutter run`
+
+Flutter is required on your machine

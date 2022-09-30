@@ -4,6 +4,5 @@ class Routes {
   }
 
   static String projects = '/projects';
-  static String start = '/start';
   static String prepare = '/prepare';
 }

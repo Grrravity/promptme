@@ -25,7 +25,8 @@ class PreparePage extends GetView<PrepareController> {
       child: Actions(
         actions: <Type, Action<Intent>>{
           PlayIntent: CallbackAction<PlayIntent>(
-              onInvoke: (PlayIntent intent) => controller.toggleScroll()),
+            onInvoke: (PlayIntent intent) => controller.toggleScroll(),
+          ),
           SizeUpIntent: CallbackAction<SizeUpIntent>(
             onInvoke: (SizeUpIntent intent) => controller.incrementFontSize(),
           ),
@@ -125,7 +126,8 @@ class PreparePage extends GetView<PrepareController> {
                                         : const AlwaysScrollableScrollPhysics(),
                                     controller: controller.scrollController,
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 300),
+                                      vertical: 300,
+                                    ),
                                     itemCount: controller.prompteur.length,
                                     itemBuilder: (context, index) => Builder(
                                       builder: (context) {
