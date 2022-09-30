@@ -6,6 +6,12 @@ Flutter project to prompt yaml inputs for audio recording and give cool features
 - Export modifications (WIP)
 - Record audio directly from the app (WIP)
 
+**Full support desktop** Currently, i'm only testing desktop.
+
+I'll make adjustment for mobile one day :')
+
+![Promptme Preview](https://media.giphy.com/media/ybsXegkKDs40NbjZ4G/giphy.gif)
+
 ## Requirements
 
 1. A folder structure like this where you put your yaml files (on your machine):
