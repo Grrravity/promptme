@@ -99,8 +99,8 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
           ProjectsSnapshot.fromFileEntity(folder).copyWith(
             hasYaml: checkYaml(content),
             isDone: checkDone(content),
-            slidesDone: countOutput(content),
-            slides: countInput(content),
+            extractsDone: countOutput(content),
+            extracts: countInput(content),
           ),
         );
       }

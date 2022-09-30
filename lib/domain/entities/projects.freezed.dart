@@ -22,8 +22,8 @@ mixin _$Projects {
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   bool? get hasYaml => throw _privateConstructorUsedError;
   bool? get isDone => throw _privateConstructorUsedError;
-  int? get slides => throw _privateConstructorUsedError;
-  int? get slidesDone => throw _privateConstructorUsedError;
+  int? get extracts => throw _privateConstructorUsedError;
+  int? get extractsDone => throw _privateConstructorUsedError;
   int? get wordCound => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -42,8 +42,8 @@ abstract class $ProjectsCopyWith<$Res> {
       DateTime? updatedAt,
       bool? hasYaml,
       bool? isDone,
-      int? slides,
-      int? slidesDone,
+      int? extracts,
+      int? extractsDone,
       int? wordCound});
 }
 
@@ -63,8 +63,8 @@ class _$ProjectsCopyWithImpl<$Res> implements $ProjectsCopyWith<$Res> {
     Object? updatedAt = freezed,
     Object? hasYaml = freezed,
     Object? isDone = freezed,
-    Object? slides = freezed,
-    Object? slidesDone = freezed,
+    Object? extracts = freezed,
+    Object? extractsDone = freezed,
     Object? wordCound = freezed,
   }) {
     return _then(_value.copyWith(
@@ -92,13 +92,13 @@ class _$ProjectsCopyWithImpl<$Res> implements $ProjectsCopyWith<$Res> {
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
               as bool?,
-      slides: slides == freezed
-          ? _value.slides
-          : slides // ignore: cast_nullable_to_non_nullable
+      extracts: extracts == freezed
+          ? _value.extracts
+          : extracts // ignore: cast_nullable_to_non_nullable
               as int?,
-      slidesDone: slidesDone == freezed
-          ? _value.slidesDone
-          : slidesDone // ignore: cast_nullable_to_non_nullable
+      extractsDone: extractsDone == freezed
+          ? _value.extractsDone
+          : extractsDone // ignore: cast_nullable_to_non_nullable
               as int?,
       wordCound: wordCound == freezed
           ? _value.wordCound
@@ -121,8 +121,8 @@ abstract class _$$_ProjectsCopyWith<$Res> implements $ProjectsCopyWith<$Res> {
       DateTime? updatedAt,
       bool? hasYaml,
       bool? isDone,
-      int? slides,
-      int? slidesDone,
+      int? extracts,
+      int? extractsDone,
       int? wordCound});
 }
 
@@ -144,8 +144,8 @@ class __$$_ProjectsCopyWithImpl<$Res> extends _$ProjectsCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? hasYaml = freezed,
     Object? isDone = freezed,
-    Object? slides = freezed,
-    Object? slidesDone = freezed,
+    Object? extracts = freezed,
+    Object? extractsDone = freezed,
     Object? wordCound = freezed,
   }) {
     return _then(_$_Projects(
@@ -173,13 +173,13 @@ class __$$_ProjectsCopyWithImpl<$Res> extends _$ProjectsCopyWithImpl<$Res>
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
               as bool?,
-      slides: slides == freezed
-          ? _value.slides
-          : slides // ignore: cast_nullable_to_non_nullable
+      extracts: extracts == freezed
+          ? _value.extracts
+          : extracts // ignore: cast_nullable_to_non_nullable
               as int?,
-      slidesDone: slidesDone == freezed
-          ? _value.slidesDone
-          : slidesDone // ignore: cast_nullable_to_non_nullable
+      extractsDone: extractsDone == freezed
+          ? _value.extractsDone
+          : extractsDone // ignore: cast_nullable_to_non_nullable
               as int?,
       wordCound: wordCound == freezed
           ? _value.wordCound
@@ -199,8 +199,8 @@ class _$_Projects implements _Projects {
       this.updatedAt,
       this.hasYaml,
       this.isDone,
-      this.slides,
-      this.slidesDone,
+      this.extracts,
+      this.extractsDone,
       this.wordCound});
 
   @override
@@ -216,15 +216,15 @@ class _$_Projects implements _Projects {
   @override
   final bool? isDone;
   @override
-  final int? slides;
+  final int? extracts;
   @override
-  final int? slidesDone;
+  final int? extractsDone;
   @override
   final int? wordCound;
 
   @override
   String toString() {
-    return 'Projects(name: $name, entity: $entity, isFolder: $isFolder, updatedAt: $updatedAt, hasYaml: $hasYaml, isDone: $isDone, slides: $slides, slidesDone: $slidesDone, wordCound: $wordCound)';
+    return 'Projects(name: $name, entity: $entity, isFolder: $isFolder, updatedAt: $updatedAt, hasYaml: $hasYaml, isDone: $isDone, extracts: $extracts, extractsDone: $extractsDone, wordCound: $wordCound)';
   }
 
   @override
@@ -238,9 +238,9 @@ class _$_Projects implements _Projects {
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality().equals(other.hasYaml, hasYaml) &&
             const DeepCollectionEquality().equals(other.isDone, isDone) &&
-            const DeepCollectionEquality().equals(other.slides, slides) &&
+            const DeepCollectionEquality().equals(other.extracts, extracts) &&
             const DeepCollectionEquality()
-                .equals(other.slidesDone, slidesDone) &&
+                .equals(other.extractsDone, extractsDone) &&
             const DeepCollectionEquality().equals(other.wordCound, wordCound));
   }
 
@@ -253,8 +253,8 @@ class _$_Projects implements _Projects {
       const DeepCollectionEquality().hash(updatedAt),
       const DeepCollectionEquality().hash(hasYaml),
       const DeepCollectionEquality().hash(isDone),
-      const DeepCollectionEquality().hash(slides),
-      const DeepCollectionEquality().hash(slidesDone),
+      const DeepCollectionEquality().hash(extracts),
+      const DeepCollectionEquality().hash(extractsDone),
       const DeepCollectionEquality().hash(wordCound));
 
   @JsonKey(ignore: true)
@@ -271,8 +271,8 @@ abstract class _Projects implements Projects {
       final DateTime? updatedAt,
       final bool? hasYaml,
       final bool? isDone,
-      final int? slides,
-      final int? slidesDone,
+      final int? extracts,
+      final int? extractsDone,
       final int? wordCound}) = _$_Projects;
 
   @override
@@ -288,9 +288,9 @@ abstract class _Projects implements Projects {
   @override
   bool? get isDone;
   @override
-  int? get slides;
+  int? get extracts;
   @override
-  int? get slidesDone;
+  int? get extractsDone;
   @override
   int? get wordCound;
   @override
@@ -307,8 +307,8 @@ mixin _$ProjectsSnapshot {
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   bool? get hasYaml => throw _privateConstructorUsedError;
   bool? get isDone => throw _privateConstructorUsedError;
-  int? get slides => throw _privateConstructorUsedError;
-  int? get slidesDone => throw _privateConstructorUsedError;
+  int? get extracts => throw _privateConstructorUsedError;
+  int? get extractsDone => throw _privateConstructorUsedError;
   int? get wordCound => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -328,8 +328,8 @@ abstract class $ProjectsSnapshotCopyWith<$Res> {
       DateTime? updatedAt,
       bool? hasYaml,
       bool? isDone,
-      int? slides,
-      int? slidesDone,
+      int? extracts,
+      int? extractsDone,
       int? wordCound});
 }
 
@@ -350,8 +350,8 @@ class _$ProjectsSnapshotCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? hasYaml = freezed,
     Object? isDone = freezed,
-    Object? slides = freezed,
-    Object? slidesDone = freezed,
+    Object? extracts = freezed,
+    Object? extractsDone = freezed,
     Object? wordCound = freezed,
   }) {
     return _then(_value.copyWith(
@@ -379,13 +379,13 @@ class _$ProjectsSnapshotCopyWithImpl<$Res>
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
               as bool?,
-      slides: slides == freezed
-          ? _value.slides
-          : slides // ignore: cast_nullable_to_non_nullable
+      extracts: extracts == freezed
+          ? _value.extracts
+          : extracts // ignore: cast_nullable_to_non_nullable
               as int?,
-      slidesDone: slidesDone == freezed
-          ? _value.slidesDone
-          : slidesDone // ignore: cast_nullable_to_non_nullable
+      extractsDone: extractsDone == freezed
+          ? _value.extractsDone
+          : extractsDone // ignore: cast_nullable_to_non_nullable
               as int?,
       wordCound: wordCound == freezed
           ? _value.wordCound
@@ -409,8 +409,8 @@ abstract class _$$_ProjectsSnapshotCopyWith<$Res>
       DateTime? updatedAt,
       bool? hasYaml,
       bool? isDone,
-      int? slides,
-      int? slidesDone,
+      int? extracts,
+      int? extractsDone,
       int? wordCound});
 }
 
@@ -433,8 +433,8 @@ class __$$_ProjectsSnapshotCopyWithImpl<$Res>
     Object? updatedAt = freezed,
     Object? hasYaml = freezed,
     Object? isDone = freezed,
-    Object? slides = freezed,
-    Object? slidesDone = freezed,
+    Object? extracts = freezed,
+    Object? extractsDone = freezed,
     Object? wordCound = freezed,
   }) {
     return _then(_$_ProjectsSnapshot(
@@ -462,13 +462,13 @@ class __$$_ProjectsSnapshotCopyWithImpl<$Res>
           ? _value.isDone
           : isDone // ignore: cast_nullable_to_non_nullable
               as bool?,
-      slides: slides == freezed
-          ? _value.slides
-          : slides // ignore: cast_nullable_to_non_nullable
+      extracts: extracts == freezed
+          ? _value.extracts
+          : extracts // ignore: cast_nullable_to_non_nullable
               as int?,
-      slidesDone: slidesDone == freezed
-          ? _value.slidesDone
-          : slidesDone // ignore: cast_nullable_to_non_nullable
+      extractsDone: extractsDone == freezed
+          ? _value.extractsDone
+          : extractsDone // ignore: cast_nullable_to_non_nullable
               as int?,
       wordCound: wordCound == freezed
           ? _value.wordCound
@@ -488,8 +488,8 @@ class _$_ProjectsSnapshot implements _ProjectsSnapshot {
       this.updatedAt,
       this.hasYaml,
       this.isDone,
-      this.slides,
-      this.slidesDone,
+      this.extracts,
+      this.extractsDone,
       this.wordCound});
 
   @override
@@ -505,15 +505,15 @@ class _$_ProjectsSnapshot implements _ProjectsSnapshot {
   @override
   final bool? isDone;
   @override
-  final int? slides;
+  final int? extracts;
   @override
-  final int? slidesDone;
+  final int? extractsDone;
   @override
   final int? wordCound;
 
   @override
   String toString() {
-    return 'ProjectsSnapshot(name: $name, entity: $entity, isFolder: $isFolder, updatedAt: $updatedAt, hasYaml: $hasYaml, isDone: $isDone, slides: $slides, slidesDone: $slidesDone, wordCound: $wordCound)';
+    return 'ProjectsSnapshot(name: $name, entity: $entity, isFolder: $isFolder, updatedAt: $updatedAt, hasYaml: $hasYaml, isDone: $isDone, extracts: $extracts, extractsDone: $extractsDone, wordCound: $wordCound)';
   }
 
   @override
@@ -527,9 +527,9 @@ class _$_ProjectsSnapshot implements _ProjectsSnapshot {
             const DeepCollectionEquality().equals(other.updatedAt, updatedAt) &&
             const DeepCollectionEquality().equals(other.hasYaml, hasYaml) &&
             const DeepCollectionEquality().equals(other.isDone, isDone) &&
-            const DeepCollectionEquality().equals(other.slides, slides) &&
+            const DeepCollectionEquality().equals(other.extracts, extracts) &&
             const DeepCollectionEquality()
-                .equals(other.slidesDone, slidesDone) &&
+                .equals(other.extractsDone, extractsDone) &&
             const DeepCollectionEquality().equals(other.wordCound, wordCound));
   }
 
@@ -542,8 +542,8 @@ class _$_ProjectsSnapshot implements _ProjectsSnapshot {
       const DeepCollectionEquality().hash(updatedAt),
       const DeepCollectionEquality().hash(hasYaml),
       const DeepCollectionEquality().hash(isDone),
-      const DeepCollectionEquality().hash(slides),
-      const DeepCollectionEquality().hash(slidesDone),
+      const DeepCollectionEquality().hash(extracts),
+      const DeepCollectionEquality().hash(extractsDone),
       const DeepCollectionEquality().hash(wordCound));
 
   @JsonKey(ignore: true)
@@ -560,8 +560,8 @@ abstract class _ProjectsSnapshot implements ProjectsSnapshot {
       final DateTime? updatedAt,
       final bool? hasYaml,
       final bool? isDone,
-      final int? slides,
-      final int? slidesDone,
+      final int? extracts,
+      final int? extractsDone,
       final int? wordCound}) = _$_ProjectsSnapshot;
 
   @override
@@ -577,9 +577,9 @@ abstract class _ProjectsSnapshot implements ProjectsSnapshot {
   @override
   bool? get isDone;
   @override
-  int? get slides;
+  int? get extracts;
   @override
-  int? get slidesDone;
+  int? get extractsDone;
   @override
   int? get wordCound;
   @override

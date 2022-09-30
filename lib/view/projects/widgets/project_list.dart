@@ -31,14 +31,15 @@ class ProjectList extends StatelessWidget {
                     children: <TextSpan>[
                       TextSpan(
                         text:
-                            '${projects[index].slidesDone} mp3 / ${projects[index].slides} textes',
+                            '${projects[index].extractsDone} mp3 / ${projects[index].extracts} extraits',
                         style: Get.textTheme.subtitle2,
                       ),
                     ],
                   )
                 else
                   TextSpan(
-                    text: '   -   Aucun yaml présent',
+                    text:
+                        '   -   Aucun yaml présent   -   ${projects[index].extractsDone} mp3',
                     style: Get.textTheme.subtitle1,
                   )
               ],
@@ -72,7 +73,8 @@ class ProjectList extends StatelessWidget {
 
   IconData getIcon(ProjectsSnapshot project) {
     if (project.hasYaml ?? false) {
-      if ((project.isDone ?? false) && project.slides == project.slidesDone) {
+      if ((project.isDone ?? false) &&
+          project.extracts == project.extractsDone) {
         return Icons.replay;
       } else {
         return Icons.play_arrow_rounded;

@@ -14,8 +14,8 @@ class Projects with _$Projects {
     DateTime? updatedAt,
     bool? hasYaml,
     bool? isDone,
-    int? slides,
-    int? slidesDone,
+    int? extracts,
+    int? extractsDone,
     int? wordCound,
   }) = _Projects;
 }
@@ -29,8 +29,8 @@ class ProjectsSnapshot with _$ProjectsSnapshot {
     DateTime? updatedAt,
     bool? hasYaml,
     bool? isDone,
-    int? slides,
-    int? slidesDone,
+    int? extracts,
+    int? extractsDone,
     int? wordCound,
   }) = _ProjectsSnapshot;
 
@@ -42,8 +42,8 @@ class ProjectsSnapshot with _$ProjectsSnapshot {
       isFolder: project.isFolder,
       hasYaml: project.hasYaml,
       isDone: project.isDone,
-      slides: project.slides,
-      slidesDone: project.slidesDone,
+      extracts: project.extracts,
+      extractsDone: project.extractsDone,
       wordCound: project.wordCound,
     );
   }
@@ -71,8 +71,8 @@ class ProjectsSnapshot with _$ProjectsSnapshot {
         isFolder: true,
         hasYaml: false,
         isDone: false,
-        slides: 0,
-        slidesDone: 0,
+        extracts: 0,
+        extractsDone: 0,
         wordCound: 0,
       );
     }
@@ -86,8 +86,8 @@ class ProjectsSnapshot with _$ProjectsSnapshot {
         isFolder: project.isFolder,
         hasYaml: project.hasYaml,
         isDone: project.isDone,
-        slides: project.slides,
-        slidesDone: project.slidesDone,
+        extracts: project.extracts,
+        extractsDone: project.extractsDone,
         wordCound: project.wordCound,
       );
 }
