@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:get/get.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path/path.dart';
 import 'package:promptme/core/theme/theme_color.dart';
 import 'package:promptme/core/widgets/x_empty_widget.dart';
@@ -16,11 +18,16 @@ class PreparePage extends GetView<PrepareController> {
   Widget build(BuildContext context) {
     return Shortcuts(
       shortcuts: <ShortcutActivator, Intent>{
-        LogicalKeySet(LogicalKeyboardKey.keyP): const PlayIntent(),
+        LogicalKeySet(LogicalKeyboardKey.space): const PlayIntent(),
         LogicalKeySet(LogicalKeyboardKey.arrowUp): const SizeUpIntent(),
         LogicalKeySet(LogicalKeyboardKey.arrowDown): const SizeDownIntent(),
         LogicalKeySet(LogicalKeyboardKey.arrowLeft): const SpeedDownIntent(),
         LogicalKeySet(LogicalKeyboardKey.arrowRight): const SpeedUpIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyE): const ToggleEditionIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyS): const RewindIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyR): const RecordIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyP): const PlayPauseRecordIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyT): const StopRecordIntent(),
       },
       child: Actions(
         actions: <Type, Action<Intent>>{
@@ -40,6 +47,19 @@ class PreparePage extends GetView<PrepareController> {
           SpeedDownIntent: CallbackAction<SpeedDownIntent>(
             onInvoke: (SpeedDownIntent intent) =>
                 controller.decrementWordPerMin(),
+          ),
+          ToggleEditionIntent: CallbackAction<ToggleEditionIntent>(
+            onInvoke: (ToggleEditionIntent intent) =>
+                controller.toggleEdition(),
+          ),
+          RecordIntent: CallbackAction<RecordIntent>(
+            onInvoke: (RecordIntent intent) => controller.record(),
+          ),
+          PlayPauseRecordIntent: CallbackAction<PlayPauseRecordIntent>(
+            onInvoke: (PlayPauseRecordIntent intent) => controller.playPause(),
+          ),
+          StopRecordIntent: CallbackAction<StopRecordIntent>(
+            onInvoke: (StopRecordIntent intent) => controller.stopRecord(),
           ),
         },
         child: Focus(
@@ -85,6 +105,9 @@ class PreparePage extends GetView<PrepareController> {
                                 controller.incrementWordPerMin(),
                             decrementWordPerMin: () =>
                                 controller.decrementWordPerMin(),
+                            toggleEdition: () => controller.toggleEdition(),
+                            isEditionEnabled: controller.isEditEnabled.value,
+                            isScrolling: controller.isScrollOngoing.value,
                           ),
                         ),
                         const SizedBox(
@@ -133,13 +156,15 @@ class PreparePage extends GetView<PrepareController> {
                                       builder: (context) {
                                         return Obx(() {
                                           return PrompteurPreview(
-                                            controller
-                                                .getListWithWordLimit(
-                                                  content: controller
-                                                      .prompteur[index],
-                                                )
-                                                .join('\n'),
+                                            controller.getTextToDisplay(index),
                                             fontSize: controller.fontSize.value,
+                                            isEditionEnabled:
+                                                controller.isEditEnabled.value,
+                                            onSave: (text) =>
+                                                controller.updateSlideContent(
+                                              index,
+                                              text,
+                                            ),
                                           );
                                         });
                                       },
@@ -159,22 +184,118 @@ class PreparePage extends GetView<PrepareController> {
                 onRetry: () => controller.retry(),
               ),
             ),
-            floatingActionButton: Tooltip(
-              message: 'Raccourci : touche "P"',
-              triggerMode: TooltipTriggerMode.longPress,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20, bottom: 20),
-                child: FloatingActionButton(
-                  backgroundColor: Get.theme.colorScheme.secondary,
-                  onPressed: () => controller.toggleScroll(),
-                  child: Obx(
-                    () => Icon(
-                      controller.isScrollOngoing.value
-                          ? Icons.pause_circle_outline_rounded
-                          : Icons.play_arrow_outlined,
-                      color: white,
-                      size: 38,
+            floatingActionButton: Padding(
+              padding: const EdgeInsets.only(right: 20, bottom: 20),
+              child: Obx(
+                () => SpeedDial(
+                  direction: SpeedDialDirection.left,
+                  renderOverlay: false,
+                  backgroundColor: controller.isRecording.value
+                      ? green
+                      : Get.theme.colorScheme.secondary,
+                  isOpenOnStart: true,
+                  childPadding: const EdgeInsets.all(5),
+                  spaceBetweenChildren: 4,
+                  closeManually: true,
+                  children: [
+                    SpeedDialChild(
+                      child: const Tooltip(
+                        message: "Raccourci : barre d'espace",
+                        child: Icon(
+                          Icons.play_arrow_rounded,
+                          color: white,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: Get.theme.colorScheme.secondary,
+                      onTap: () => controller.playScroll(),
                     ),
+                    SpeedDialChild(
+                      child: const Tooltip(
+                        message: "Raccourci : barre d'espace",
+                        child: Icon(
+                          Icons.pause_rounded,
+                          color: white,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: Get.theme.colorScheme.secondary,
+                      onTap: () => controller.pauseScroll(),
+                    ),
+                    SpeedDialChild(
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "S"',
+                        child: Icon(
+                          Icons.fast_rewind_rounded,
+                          color: white,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: Get.theme.colorScheme.secondary,
+                      onTap: () => controller.scrollToStart(),
+                    ),
+                    SpeedDialChild(
+                      label: 'Enregistrer audio',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "R"',
+                        child: Icon(
+                          Icons.mic_outlined,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.record(),
+                    ),
+                    SpeedDialChild(
+                      label: 'Pause rec',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "P"',
+                        child: Icon(
+                          Icons.fast_rewind_rounded,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.pauseRecord(),
+                    ),
+                    SpeedDialChild(
+                      label: 'Reprise rec',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "P"',
+                        child: Icon(
+                          Icons.fast_rewind_rounded,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.unPauseRecord(),
+                    ),
+                    SpeedDialChild(
+                      label: 'Terminer rec',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "T"',
+                        child: Icon(
+                          Icons.fast_rewind_rounded,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.stopRecord(),
+                    ),
+                  ],
+                  animationDuration: Duration.zero,
+                  child: Icon(
+                    controller.isRecording.value
+                        ? controller.isPauseRecording.value
+                            ? Icons.mic_off_rounded
+                            : Icons.mic_rounded
+                        : LineAwesomeIcons.broadcast_tower,
+                    color: white,
+                    size: 38,
                   ),
                 ),
               ),
@@ -204,4 +325,24 @@ class SpeedUpIntent extends Intent {
 
 class SpeedDownIntent extends Intent {
   const SpeedDownIntent();
+}
+
+class ToggleEditionIntent extends Intent {
+  const ToggleEditionIntent();
+}
+
+class RewindIntent extends Intent {
+  const RewindIntent();
+}
+
+class RecordIntent extends Intent {
+  const RecordIntent();
+}
+
+class PlayPauseRecordIntent extends Intent {
+  const PlayPauseRecordIntent();
+}
+
+class StopRecordIntent extends Intent {
+  const StopRecordIntent();
 }

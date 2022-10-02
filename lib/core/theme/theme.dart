@@ -56,7 +56,16 @@ final ThemeData myTheme = ThemeData(
       brightness: Brightness.light,
     ),
   ),
-  tooltipTheme: const TooltipThemeData(padding: EdgeInsets.all(8)),
+  tooltipTheme: const TooltipThemeData(
+    padding: EdgeInsets.all(12),
+    textStyle: TextStyle(
+      color: white,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+      fontFamily: 'Roboto',
+    ),
+  ),
   textTheme: const TextTheme(
     headline1: TextStyle(
       color: Color(0xff2b2e42),
