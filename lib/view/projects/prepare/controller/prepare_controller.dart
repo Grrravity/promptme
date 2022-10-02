@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_dynamic_calls, avoid_slow_async_io
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:path/path.dart';
 import 'package:promptme/domain/entities/projects.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:yaml/yaml.dart';
+import 'package:yaml_edit/yaml_edit.dart';
 
 class PrepareController extends GetxController with StateMixin<RxStatus> {
   RxString dir = ''.obs;
@@ -16,12 +18,13 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
   RxInt wordCount = 0.obs;
   String yamlName = '';
   RxDouble fontSize = 60.0.obs;
-  RxInt wordPerMin = 80.obs;
+  RxInt wordPerMin = 75.obs;
   RxDouble mins = 0.0.obs;
   Duration duration = Duration.zero;
   RxInt extracts = 0.obs;
   ScrollController scrollController = ScrollController();
   RxBool isScrollOngoing = false.obs;
+  RxBool isEditEnabled = false.obs;
 
   bool shouldAutoscroll = false;
 
@@ -156,22 +159,73 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
     return list;
   }
 
+  String getTextToDisplay(int index) {
+    return getListWithWordLimit(
+      content: prompteur[index],
+    ).join('\n');
+  }
+
+  void toggleEdition() {
+    if (!isScrollOngoing.value) {
+      isEditEnabled.toggle();
+    }
+  }
+
+  Future<void> updateSlideContent(int index, String text) async {
+    if (projects.any((element) => element.name.endsWith('.yaml'))) {
+      try {
+        final yamlElement =
+            projects.firstWhere((element) => element.name.endsWith('.yaml'));
+        yamlName = yamlElement.name;
+
+        final file = File(yamlElement.entity.path);
+        final yamlString = await file.readAsString();
+
+        final yamlEditor = YamlEditor(yamlString);
+
+        final node = YamlScalar.wrap(
+          text.replaceAllMapped('\n', (match) => ''),
+          style: ScalarStyle.LITERAL,
+        );
+        yamlEditor.update(['sections', index, 'text'], node);
+        await file.writeAsString(
+            yamlEditor.toString().replaceAllMapped('|-', (match) => '|'));
+        prompteur.value = [];
+      } catch (e) {
+        debugPrint(e.toString());
+      }
+    }
+    await getPrompt();
+    countWordInText();
+    Get.back();
+    toggleEdition();
+  }
+
   void incrementFontSize() {
-    fontSize.value++;
+    if (!isScrollOngoing.value) {
+      fontSize.value++;
+    }
   }
 
   void decrementFontSize() {
-    fontSize.value--;
+    if (!isScrollOngoing.value) {
+      fontSize.value--;
+    }
   }
 
   void incrementWordPerMin() {
-    wordPerMin.value++;
-    calcDuration();
+    if (!isScrollOngoing.value) {
+      wordPerMin.value++;
+      calcDuration();
+      print(scrollController.position.pixels);
+    }
   }
 
   void decrementWordPerMin() {
-    wordPerMin.value--;
-    calcDuration();
+    if (!isScrollOngoing.value) {
+      wordPerMin.value--;
+      calcDuration();
+    }
   }
 
   void countWordInText() {
@@ -189,11 +243,12 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
     if (isScrollOngoing.value) {
       pauseScroll();
     } else {
-      scrollDown();
+      playScroll();
     }
   }
 
-  void scrollDown() {
+  void playScroll() {
+    isEditEnabled.value = false;
     isScrollOngoing.value = true;
     final percent = scrollController.position.pixels /
         scrollController.position.maxScrollExtent;
@@ -202,6 +257,21 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
       curve: Curves.linear,
       duration: duration - (duration * percent),
     );
+  }
+
+  void pauseScroll() {
+    isScrollOngoing.value = false;
+    scrollController.jumpTo(scrollController.position.pixels);
+  }
+
+  void scrollToStart() {
+    if (!isScrollOngoing.value) {
+      scrollController.animateTo(
+        scrollController.position.minScrollExtent,
+        curve: Curves.linear,
+        duration: const Duration(milliseconds: 250),
+      );
+    }
   }
 
   void scrollListener() {

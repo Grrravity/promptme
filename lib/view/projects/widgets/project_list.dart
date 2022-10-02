@@ -75,12 +75,12 @@ class ProjectList extends StatelessWidget {
     if (project.hasYaml ?? false) {
       if ((project.isDone ?? false) &&
           project.extracts == project.extractsDone) {
-        return Icons.replay;
+        return Icons.replay_rounded;
       } else {
         return Icons.play_arrow_rounded;
       }
     } else {
-      return Icons.play_disabled;
+      return Icons.play_disabled_rounded;
     }
   }
 

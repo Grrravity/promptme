@@ -14,6 +14,9 @@ class Settings extends StatefulWidget {
     required this.wordPerMin,
     required this.fontSize,
     required this.estimatedDuration,
+    required this.isEditionEnabled,
+    required this.toggleEdition,
+    required this.isScrolling,
   });
   final int wordCount;
   final String fileName;
@@ -24,6 +27,9 @@ class Settings extends StatefulWidget {
   final void Function() decrementFontSize;
   final void Function() incrementWordPerMin;
   final void Function() decrementWordPerMin;
+  final bool isEditionEnabled;
+  final void Function() toggleEdition;
+  final bool isScrolling;
 
   @override
   State<Settings> createState() => _SettingsState();
@@ -33,6 +39,11 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: widget.isScrolling
+          ? grey4
+          : widget.isEditionEnabled
+              ? paleRedChart
+              : white,
       margin: const EdgeInsets.all(16),
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -50,12 +61,12 @@ class _SettingsState extends State<Settings> {
                   child: IconButton(
                     splashRadius: 18,
                     onPressed: widget.decrementWordPerMin,
-                    icon: const Icon(Icons.remove),
+                    icon: const Icon(Icons.remove_rounded),
                     color: orangeChart,
                   ),
                 ),
                 Text(
-                  'Mot par min : ${widget.wordPerMin}',
+                  'Mots par min : ${widget.wordPerMin}',
                   style: Get.textTheme.headline6,
                 ),
                 Tooltip(
@@ -63,7 +74,7 @@ class _SettingsState extends State<Settings> {
                   child: IconButton(
                     splashRadius: 18,
                     onPressed: widget.incrementWordPerMin,
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Icons.add_rounded),
                     color: green,
                   ),
                 )
@@ -75,7 +86,7 @@ class _SettingsState extends State<Settings> {
                   message: 'Raccourci : flèche du bas',
                   child: IconButton(
                     splashRadius: 18,
-                    icon: const Icon(Icons.remove),
+                    icon: const Icon(Icons.remove_rounded),
                     onPressed: widget.decrementFontSize,
                     color: orangeChart,
                   ),
@@ -88,7 +99,7 @@ class _SettingsState extends State<Settings> {
                   message: 'Raccourci : flèche du haut',
                   child: IconButton(
                     splashRadius: 18,
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Icons.add_rounded),
                     color: green,
                     onPressed: widget.incrementFontSize,
                   ),
@@ -103,6 +114,19 @@ class _SettingsState extends State<Settings> {
             Text(
               'Nombre de mots : ${widget.wordCount}',
               style: Get.textTheme.bodyText2,
+            ),
+            Tooltip(
+              message: 'Raccourci : touche "E"',
+              child: IconButton(
+                onPressed: widget.toggleEdition,
+                splashRadius: 18,
+                icon: Icon(
+                  !widget.isEditionEnabled
+                      ? Icons.mode_edit_rounded
+                      : Icons.edit_off_rounded,
+                  color: !widget.isEditionEnabled ? green : primary,
+                ),
+              ),
             ),
           ],
         ),
