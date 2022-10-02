@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:promptme/domain/entities/projects.dart';
+import 'package:record/record.dart';
 import 'package:string_extensions/string_extensions.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_edit/yaml_edit.dart';
@@ -24,9 +25,11 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
   RxInt extracts = 0.obs;
   ScrollController scrollController = ScrollController();
   RxBool isScrollOngoing = false.obs;
+  RxBool isRecording = false.obs;
+  RxBool isPauseRecording = false.obs;
   RxBool isEditEnabled = false.obs;
 
-  bool shouldAutoscroll = false;
+  final recorder = Record();
 
   @override
   void onInit() {
@@ -282,9 +285,50 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
     }
   }
 
-  void pauseScroll() {
-    isScrollOngoing.value = false;
-    scrollController.jumpTo(scrollController.position.pixels);
+  Future<void> record() async {
+    // Check and request permission
+    if (await recorder.hasPermission() && !(await recorder.isRecording())) {
+      isRecording.value = true;
+      isPauseRecording.value = false;
+      // Start recording
+      await recorder.start(
+        path: projects.first.entity.path.replaceAllMapped(
+          projects.first.name,
+          (match) => '${DateTime.now().toString()}.m4a',
+        ),
+        numChannels: 1,
+      );
+    }
+  }
+
+  Future<void> stopRecord() async {
+    if (await recorder.isRecording()) {
+      isRecording.value = false;
+      isPauseRecording.value = false;
+      await recorder.stop();
+    }
+  }
+
+  Future<void> playPause() async {
+    if (isPauseRecording.value) {
+      await unPauseRecord();
+    } else {
+      await pauseRecord();
+    }
+  }
+
+  Future<void> pauseRecord() async {
+    if (isRecording.value) {
+      isPauseRecording.value = true;
+      await recorder.pause();
+    }
+  }
+
+  Future<void> unPauseRecord() async {
+    if (isRecording.value) {
+      isPauseRecording.value = false;
+      await recorder.resume();
+    }
   }
 
   void retry() {

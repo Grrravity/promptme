@@ -25,6 +25,9 @@ class PreparePage extends GetView<PrepareController> {
         LogicalKeySet(LogicalKeyboardKey.arrowRight): const SpeedUpIntent(),
         LogicalKeySet(LogicalKeyboardKey.keyE): const ToggleEditionIntent(),
         LogicalKeySet(LogicalKeyboardKey.keyS): const RewindIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyR): const RecordIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyP): const PlayPauseRecordIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyT): const StopRecordIntent(),
       },
       child: Actions(
         actions: <Type, Action<Intent>>{
@@ -48,6 +51,15 @@ class PreparePage extends GetView<PrepareController> {
           ToggleEditionIntent: CallbackAction<ToggleEditionIntent>(
             onInvoke: (ToggleEditionIntent intent) =>
                 controller.toggleEdition(),
+          ),
+          RecordIntent: CallbackAction<RecordIntent>(
+            onInvoke: (RecordIntent intent) => controller.record(),
+          ),
+          PlayPauseRecordIntent: CallbackAction<PlayPauseRecordIntent>(
+            onInvoke: (PlayPauseRecordIntent intent) => controller.playPause(),
+          ),
+          StopRecordIntent: CallbackAction<StopRecordIntent>(
+            onInvoke: (StopRecordIntent intent) => controller.stopRecord(),
           ),
         },
         child: Focus(
@@ -178,7 +190,7 @@ class PreparePage extends GetView<PrepareController> {
                 () => SpeedDial(
                   direction: SpeedDialDirection.left,
                   renderOverlay: false,
-                  backgroundColor: controller.isScrollOngoing.value
+                  backgroundColor: controller.isRecording.value
                       ? green
                       : Get.theme.colorScheme.secondary,
                   isOpenOnStart: true,
@@ -222,11 +234,65 @@ class PreparePage extends GetView<PrepareController> {
                       backgroundColor: Get.theme.colorScheme.secondary,
                       onTap: () => controller.scrollToStart(),
                     ),
+                    SpeedDialChild(
+                      label: 'Enregistrer audio',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "R"',
+                        child: Icon(
+                          Icons.mic_outlined,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.record(),
+                    ),
+                    SpeedDialChild(
+                      label: 'Pause rec',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "P"',
+                        child: Icon(
+                          Icons.fast_rewind_rounded,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.pauseRecord(),
+                    ),
+                    SpeedDialChild(
+                      label: 'Reprise rec',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "P"',
+                        child: Icon(
+                          Icons.fast_rewind_rounded,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.unPauseRecord(),
+                    ),
+                    SpeedDialChild(
+                      label: 'Terminer rec',
+                      child: const Tooltip(
+                        message: 'Raccourci : touche "T"',
+                        child: Icon(
+                          Icons.fast_rewind_rounded,
+                          color: primary,
+                          size: 38,
+                        ),
+                      ),
+                      backgroundColor: white,
+                      onTap: () => controller.stopRecord(),
+                    ),
                   ],
                   animationDuration: Duration.zero,
                   child: Icon(
-                    controller.isScrollOngoing.value
-                        ? Icons.pause_rounded
+                    controller.isRecording.value
+                        ? controller.isPauseRecording.value
+                            ? Icons.mic_off_rounded
+                            : Icons.mic_rounded
                         : LineAwesomeIcons.broadcast_tower,
                     color: white,
                     size: 38,
@@ -267,4 +333,16 @@ class ToggleEditionIntent extends Intent {
 
 class RewindIntent extends Intent {
   const RewindIntent();
+}
+
+class RecordIntent extends Intent {
+  const RecordIntent();
+}
+
+class PlayPauseRecordIntent extends Intent {
+  const PlayPauseRecordIntent();
+}
+
+class StopRecordIntent extends Intent {
+  const StopRecordIntent();
 }
