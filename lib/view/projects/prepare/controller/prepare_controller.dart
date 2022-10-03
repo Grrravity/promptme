@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:promptme/domain/entities/projects.dart';
 import 'package:record/record.dart';
@@ -291,10 +292,12 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
       isRecording.value = true;
       isPauseRecording.value = false;
       // Start recording
+      final date =
+          DateFormat('yyyy-MM-dd_HH-mm-ss-SSSS').format(DateTime.now());
       await recorder.start(
         path: projects.first.entity.path.replaceAllMapped(
           projects.first.name,
-          (match) => '${DateTime.now().toString()}.m4a',
+          (match) => 'promptme_rec_$date.m4a',
         ),
         numChannels: 1,
       );
