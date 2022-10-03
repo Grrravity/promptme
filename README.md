@@ -12,7 +12,7 @@ I'll make adjustment for mobile one day :')
 
 ## Preview
 
-[![Promptme Preview](https://img.youtube.com/vi/xGIVkOLX4gU/default.jpg)](https://www.youtube.com/watch?v=xGIVkOLX4gU 'Watch demo here :)')
+[![Promptme Preview](https://img.youtube.com/vi/4hV7nwzypPI/default.jpg)](https://www.youtube.com/watch?v=4hV7nwzypPI 'Watch demo here :)')
 
 ## Requirements
 
@@ -24,13 +24,16 @@ AudioProjectMainFolder
 │
 └───FirstProjectFolder
 │   │   audiocontent.yaml
-│   │   audioOutput1.mp3
-│   │   audioOutput2.mp3
+│   │   promptme_rec_2022-12-21_10-10-30-04522.m4a --> generated when recording
+│   │   promptme_rec_2022-12-21_10-10-32-21120.m4a --> generated when recording
+│   │   finalAudio1.mp3                            --> your post prod files
+│   │   finalAudio2.mp3
 │   │   ...
 │   
 └───SecondProjectFolder
     │   audiocontent.yaml
-    │   audioOutput1.mp3
+│   │   promptme_rec_2022-12-22_21-45-16-3324.m4a --> generated when recording
+│   │   finalAudio1.mp3                            --> your post prod files
     │   ...
 ```
 
