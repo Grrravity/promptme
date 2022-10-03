@@ -297,7 +297,7 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
       await recorder.start(
         path: projects.first.entity.path.replaceAllMapped(
           projects.first.name,
-          (match) => 'promptme_rec_$date',
+          (match) => 'promptme_rec_$date.m4a',
         ),
         numChannels: 1,
       );
