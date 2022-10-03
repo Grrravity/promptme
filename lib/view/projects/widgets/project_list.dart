@@ -12,12 +12,6 @@ class ProjectList extends StatelessWidget {
     return ListView.separated(
       itemCount: projects.length,
       itemBuilder: (context, index) {
-        final partialPath = projects[index].entity.path.split('/')
-          ..replaceRange(
-            0,
-            projects[index].entity.path.split('/').length - 5,
-            ['...'],
-          );
         return ListTile(
           title: RichText(
             text: TextSpan(
@@ -48,7 +42,7 @@ class ProjectList extends StatelessWidget {
           subtitle: Padding(
             padding: const EdgeInsets.all(8),
             child: Text(
-              partialPath.join('/'),
+              projects[index].entity.path,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Get.textTheme.bodyText2,
