@@ -10,17 +10,7 @@ Flutter project to prompt yaml inputs for audio recording and give cool features
 
 I'll make adjustment for mobile one day :')
 
-![Promptme Preview](https://media.giphy.com/media/ybsXegkKDs40NbjZ4G/giphy.gif)
-
-<a href="url"><img src="./1.png" align="left" width=40% height=40% >
-
-<img src="./2.png" align="right" width=40% height=40%></a>
-
-<a href="url"><img src="./3.png" align="left" width=40% height=40% >
-
-<img src="./4.png" align="right" width=40% height=40%></a>
-
-<img src="./5.png" align="center" width=50% height=50%>
+[![Promptme Preview](https://img.youtube.com/vi/xGIVkOLX4gU/default.jpg)](https://www.youtube.com/watch?v=xGIVkOLX4gU 'Watch demo here :)')
 
 ## Requirements
 
