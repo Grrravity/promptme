@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:promptme/core/Routes/route.dart';
+import 'package:promptme/core/routes/route.dart';
 import 'package:promptme/view/projects/export_projects.dart';
 import 'package:promptme/view/projects/prepare/export_prepare.dart';
 

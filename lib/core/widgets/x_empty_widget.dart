@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:promptme/core/Helper/constants.dart';
-import 'package:promptme/core/Theme/theme_color.dart';
+import 'package:promptme/core/helper/constants.dart';
+import 'package:promptme/core/theme/theme_color.dart';
 
 class XEmptyWidget extends StatelessWidget {
   const XEmptyWidget({

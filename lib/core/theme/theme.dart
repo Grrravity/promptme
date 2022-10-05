@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:promptme/core/Theme/theme_color.dart';
+import 'package:promptme/core/theme/theme_color.dart';
 
 final ThemeData myTheme = ThemeData(
   cardTheme: const CardTheme(
