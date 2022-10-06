@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path/path.dart';
 import 'package:promptme/core/theme/theme_color.dart';
-import 'package:promptme/core/widgets/x_empty_widget.dart';
-import 'package:promptme/core/widgets/x_error_widget.dart';
+import 'package:promptme/core/widgets/empty_widget.dart';
+import 'package:promptme/core/widgets/error_widget.dart';
 import 'package:promptme/view/projects/controller/project_controller.dart';
 import 'package:promptme/view/projects/widgets/project_list.dart';
 
@@ -39,13 +39,13 @@ class ProjectsPage extends GetView<ProjectsController> {
                           .startProject(controller.projects[index].entity.path),
                     ),
                   )
-                : const XEmptyWidget(
+                : const EmptyWidget(
                     message: 'Aucun projet ajouté',
                   );
           },
         ),
         onLoading: const Center(child: CircularProgressIndicator()),
-        onError: (e) => XErrorWidget(
+        onError: (e) => CustomErrorwidget(
           error: e ?? 'Erreur inattendue',
           onRetry: () => controller.retry(),
         ),

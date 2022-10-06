@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:promptme/core/widgets/x_button.dart';
+import 'package:promptme/core/widgets/button_factory.dart';
 
 class PrompteurPreview extends StatelessWidget {
   const PrompteurPreview(
@@ -64,15 +64,15 @@ class PrompteurPreview extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    XButton.noBorderGrey(
+                    ButtonFactory.noBorderGrey(
                       value: 'Annuler',
                       fontSize: 16,
-                      onPressed: () => Get.back(),
+                      onPressed: Get.back,
                     ),
                     const SizedBox(
                       width: 20,
                     ),
-                    XButton.noBorderRed(
+                    ButtonFactory.noBorderRed(
                       value: 'Enregistrer',
                       fontSize: 16,
                       onPressed: () async {

@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:promptme/core/helper/constants.dart';
 import 'package:promptme/core/theme/theme_color.dart';
 
-class XEmptyWidget extends StatelessWidget {
-  const XEmptyWidget({
+class EmptyWidget extends StatelessWidget {
+  const EmptyWidget({
     super.key,
     required this.message,
     this.title,
@@ -31,6 +31,7 @@ class XEmptyWidget extends StatelessWidget {
                 placeholderBuilder: (BuildContext context) => const SizedBox(
                   height: 125,
                 ),
+                height: 250,
               ),
             ),
             RichText(

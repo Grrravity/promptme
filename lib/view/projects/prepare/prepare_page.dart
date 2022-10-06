@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:path/path.dart';
 import 'package:promptme/core/theme/theme_color.dart';
-import 'package:promptme/core/widgets/x_empty_widget.dart';
-import 'package:promptme/core/widgets/x_error_widget.dart';
+import 'package:promptme/core/widgets/empty_widget.dart';
+import 'package:promptme/core/widgets/error_widget.dart';
 import 'package:promptme/view/projects/prepare/controller/prepare_controller.dart';
 import 'package:promptme/view/projects/prepare/widget/prompteur_preview.dart';
 import 'package:promptme/view/projects/prepare/widget/settings.dart';
@@ -177,9 +177,9 @@ class PreparePage extends GetView<PrepareController> {
                         ),
                       ],
                     )
-                  : const XEmptyWidget(message: 'Ce projet est vide'),
+                  : const EmptyWidget(message: 'Ce projet est vide'),
               onLoading: const Center(child: CircularProgressIndicator()),
-              onError: (e) => XErrorWidget(
+              onError: (e) => CustomErrorwidget(
                 error: e ?? 'Erreur inattendue',
                 onRetry: () => controller.retry(),
               ),

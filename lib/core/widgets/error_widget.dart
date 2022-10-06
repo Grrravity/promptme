@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:promptme/core/widgets/x_button.dart';
+import 'package:promptme/core/widgets/button_factory.dart';
 
-class XErrorWidget extends StatelessWidget {
-  const XErrorWidget({super.key, required this.error, required this.onRetry});
+class CustomErrorwidget extends StatelessWidget {
+  const CustomErrorwidget({
+    super.key,
+    required this.error,
+    required this.onRetry,
+  });
   final String error;
   final void Function() onRetry;
 
@@ -43,7 +47,7 @@ class XErrorWidget extends StatelessWidget {
             ),
             SizedBox(
               height: 56,
-              child: XButton.redFilled(
+              child: ButtonFactory.redFilled(
                 value: 'Réessayer'.toUpperCase(),
                 onPressed: onRetry,
               ),

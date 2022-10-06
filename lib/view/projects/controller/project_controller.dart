@@ -4,9 +4,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
+import 'package:promptme/core/helper/toaster.dart';
 import 'package:promptme/core/routes/route.dart';
 import 'package:promptme/domain/entities/projects.dart';
 import 'package:yaml/yaml.dart';
@@ -151,7 +153,13 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
         final yamlList = yaml['sections'] as YamlList;
         count = yamlList.length;
       } catch (e) {
-        debugPrint(e.toString());
+        showToast(
+          isSuccess: false,
+          message: kDebugMode
+              ? '${content.firstWhere((element) => element.name.endsWith('.yaml')).name} - ${e.toString()}'
+              : 'Le yaml ${content.firstWhere((element) => element.name.endsWith('.yaml')).name} semble mal formaté. Corrigez-le et rééssayez.',
+          action: SnackBarAction(label: 'recharger', onPressed: onInit),
+        );
       }
     }
     return count;

@@ -62,7 +62,16 @@ class ProjectsSnapshot with _$ProjectsSnapshot {
           wordCound: 0,
         );
       } else {
-        throw Exception("Ce n'est pas un fichier");
+        return ProjectsSnapshot(
+          name: basename(entity.path),
+          entity: entity,
+          isFolder: true,
+          hasYaml: false,
+          isDone: false,
+          extracts: 0,
+          extractsDone: 0,
+          wordCound: 0,
+        );
       }
     } catch (_) {
       return ProjectsSnapshot(

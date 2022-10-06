@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:promptme/core/theme/theme_color.dart';
 
-class XButton extends StatelessWidget {
+class ButtonFactory extends StatelessWidget {
   ///Bouton arrondit, texte noir, background blanc, bordures transparentes ,  shadow: paramètre pour l'ombre
-  factory XButton.whiteShadow({
+  factory ButtonFactory.whiteShadow({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -15,7 +15,7 @@ class XButton extends StatelessWidget {
     bool enabled = true,
     TextStyle? textStyle,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: Colors.transparent,
@@ -32,7 +32,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton arrondit, texte blanc, background blanc, bordures rouges ,  shadow: paramètre pour l'ombre
-  factory XButton.redOutlinedShadow({
+  factory ButtonFactory.redOutlinedShadow({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -43,7 +43,7 @@ class XButton extends StatelessWidget {
     bool enabled = true,
     TextStyle? textStyle,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: Colors.transparent,
@@ -60,7 +60,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton carré, texte blanc, background blanc, bordures rouges
-  factory XButton.redOutlinedRect({
+  factory ButtonFactory.redOutlinedRect({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -73,7 +73,7 @@ class XButton extends StatelessWidget {
     EdgeInsets? padding,
     EdgeInsets? margin,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value,
       onPressed: onPressed,
       borderColor: primary,
@@ -92,7 +92,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton arrondit, texte blanc, background blanc, bordures rouges
-  factory XButton.redOutlined({
+  factory ButtonFactory.redOutlined({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -104,7 +104,7 @@ class XButton extends StatelessWidget {
     TextStyle? textStyle,
     EdgeInsets? padding,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: primary,
@@ -121,7 +121,7 @@ class XButton extends StatelessWidget {
     );
   }
 
-  factory XButton.redFilled({
+  factory ButtonFactory.redFilled({
     required String value,
     required void Function() onPressed,
     double? width,
@@ -131,7 +131,7 @@ class XButton extends StatelessWidget {
     TextStyle? textStyle,
     EdgeInsets? padding,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: Colors.transparent,
@@ -146,7 +146,7 @@ class XButton extends StatelessWidget {
     );
   }
 
-  factory XButton.whiteOutlined({
+  factory ButtonFactory.whiteOutlined({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -157,7 +157,7 @@ class XButton extends StatelessWidget {
     BorderRadius borderRadius = const BorderRadius.all(Radius.circular(90)),
     TextStyle? textStyle,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: white,
@@ -173,7 +173,7 @@ class XButton extends StatelessWidget {
     );
   }
 
-  factory XButton.blackOutlined({
+  factory ButtonFactory.blackOutlined({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -184,7 +184,7 @@ class XButton extends StatelessWidget {
     bool enabled = true,
     BorderRadius borderRadius = const BorderRadius.all(Radius.circular(20)),
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: black1,
@@ -200,7 +200,7 @@ class XButton extends StatelessWidget {
     );
   }
 
-  factory XButton.greyOutlined({
+  factory ButtonFactory.greyOutlined({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -211,7 +211,7 @@ class XButton extends StatelessWidget {
     bool enabled = true,
     BorderRadius borderRadius = const BorderRadius.all(Radius.circular(20)),
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: grey8,
@@ -228,7 +228,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton arrondit , texte blanc , bordures transparentes
-  factory XButton.greyFilled({
+  factory ButtonFactory.greyFilled({
     required String value,
     required void Function() onPressed,
     double? width,
@@ -236,7 +236,7 @@ class XButton extends StatelessWidget {
     TextStyle? textStyle,
     bool enabled = true,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: Colors.transparent,
@@ -250,7 +250,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton sans bordure , texte rouge
-  factory XButton.noBorderRed({
+  factory ButtonFactory.noBorderRed({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -261,7 +261,7 @@ class XButton extends StatelessWidget {
     bool enabled = true,
     double fontSize = 12,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       textStyle: textStyle,
@@ -278,7 +278,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton sans bordure , texte gris
-  factory XButton.noBorderGrey({
+  factory ButtonFactory.noBorderGrey({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -289,7 +289,7 @@ class XButton extends StatelessWidget {
     bool enabled = true,
     double fontSize = 12,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       textStyle: textStyle,
       onPressed: onPressed,
@@ -306,7 +306,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton faible arrondit , texte gris , bordures grises
-  factory XButton.grey({
+  factory ButtonFactory.grey({
     required String value,
     required void Function() onPressed,
     Widget? startIcon,
@@ -316,7 +316,7 @@ class XButton extends StatelessWidget {
     TextStyle? textStyle,
     bool enabled = true,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: Colors.transparent,
@@ -332,7 +332,7 @@ class XButton extends StatelessWidget {
   }
 
   ///Bouton arrondit , texte noir , bordures noirs
-  factory XButton.darkOutlined({
+  factory ButtonFactory.darkOutlined({
     required String value,
     required void Function() onPressed,
     double? width,
@@ -341,7 +341,7 @@ class XButton extends StatelessWidget {
     TextStyle? textStyle,
     EdgeInsets? padding,
   }) {
-    return XButton._(
+    return ButtonFactory._(
       value: value.toUpperCase(),
       onPressed: onPressed,
       borderColor: Colors.black,
@@ -354,7 +354,7 @@ class XButton extends StatelessWidget {
     );
   }
 
-  const XButton._({
+  const ButtonFactory._({
     required this.value,
     required this.onPressed,
     this.startIcon,

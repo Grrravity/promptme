@@ -3,10 +3,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
+import 'package:promptme/core/helper/toaster.dart';
 import 'package:promptme/domain/entities/projects.dart';
 import 'package:record/record.dart';
 import 'package:string_extensions/string_extensions.dart';
@@ -95,7 +97,13 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
         final yamlList = yaml['sections'] as YamlList;
         count = yamlList.length;
       } catch (e) {
-        debugPrint(e.toString());
+        showToast(
+          isSuccess: false,
+          message: kDebugMode
+              ? e.toString()
+              : 'Le yaml semble mal formaté. Corrigez-le et rééssayez',
+          action: SnackBarAction(label: 'recharger', onPressed: onInit),
+        );
       }
     }
     return count;
@@ -121,7 +129,13 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
           prompteur.add(content);
         }
       } catch (e) {
-        debugPrint(e.toString());
+        showToast(
+          isSuccess: false,
+          message: kDebugMode
+              ? e.toString()
+              : 'Le yaml semble mal formaté. Corrigez-le et rééssayez',
+          action: SnackBarAction(label: 'recharger', onPressed: onInit),
+        );
       }
     }
   }
@@ -156,7 +170,13 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
                 .join(' '),
           );
         } else {
-          debugPrint(e.toString());
+          showToast(
+            isSuccess: false,
+            message: kDebugMode
+                ? e.toString()
+                : "Une erreur inatendue s'est produite. Merci de déposer une issue sur le repo github de promptme.",
+            action: SnackBarAction(label: 'recharger', onPressed: onInit),
+          );
         }
       }
     }
@@ -193,10 +213,17 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
         );
         yamlEditor.update(['sections', index, 'text'], node);
         await file.writeAsString(
-            yamlEditor.toString().replaceAllMapped('|-', (match) => '|'));
+          yamlEditor.toString().replaceAllMapped('|-', (match) => '|'),
+        );
         prompteur.value = [];
       } catch (e) {
-        debugPrint(e.toString());
+        showToast(
+          isSuccess: false,
+          message: kDebugMode
+              ? e.toString()
+              : "L'écriture de vos modification a échouée. Verifiez votre fichier yaml et réessayez.",
+          action: SnackBarAction(label: 'recharger', onPressed: onInit),
+        );
       }
     }
     await getPrompt();
@@ -221,7 +248,6 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
     if (!isScrollOngoing.value) {
       wordPerMin.value++;
       calcDuration();
-      print(scrollController.position.pixels);
     }
   }
 
