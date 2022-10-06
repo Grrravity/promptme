@@ -11,9 +11,10 @@ import 'package:path/path.dart';
 import 'package:promptme/core/helper/toaster.dart';
 import 'package:promptme/core/routes/route.dart';
 import 'package:promptme/domain/entities/projects.dart';
-import 'package:yaml/yaml.dart';
+import 'package:promptme/infrastructure/services/yaml_mixin.dart';
 
-class ProjectsController extends GetxController with StateMixin<RxStatus> {
+class ProjectsController extends GetxController
+    with StateMixin<RxStatus>, YamlMixin {
   RxList<ProjectsSnapshot> projects = <ProjectsSnapshot>[].obs;
   RxString workingDirPath = ''.obs;
 
@@ -25,8 +26,12 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
 
   @override
   Future<void> onReady() async {
-    if (workingDirPath.value != '') {
-      await getProjectList();
+    try {
+      if (workingDirPath.value != '') {
+        await getProjectList();
+      }
+    } catch (e) {
+      change(null, status: RxStatus.error(e.toString()));
     }
     change(null, status: RxStatus.success());
     super.onReady();
@@ -137,31 +142,26 @@ class ProjectsController extends GetxController with StateMixin<RxStatus> {
   }
 
   int countInput(List<ProjectsSnapshot> content) {
-    var count = 0;
-    if (content.any((element) => element.name.endsWith('.yaml'))) {
-      try {
-        final yamlElement =
-            content.firstWhere((element) => element.name.endsWith('.yaml'));
-
-        final file = File(yamlElement.entity.path);
-        final yamlString = file.readAsStringSync();
-
-        final yamlDoc = loadYamlDocument(yamlString);
-        final yamlContent = yamlDoc.contents;
-        final yaml = yamlContent.value as YamlMap;
-
-        final yamlList = yaml['sections'] as YamlList;
-        count = yamlList.length;
-      } catch (e) {
+    try {
+      return countYamlInput(
+        getYamlElement(content).fold((element) => element, (error) {
+          showToast(
+            isSuccess: false,
+            message: kDebugMode ? error.toString() : error.message,
+            action: SnackBarAction(label: 'recharger', onPressed: onInit),
+          );
+          throw error;
+        }),
+      ).fold((count) => count, (error) {
         showToast(
           isSuccess: false,
-          message: kDebugMode
-              ? '${content.firstWhere((element) => element.name.endsWith('.yaml')).name} - ${e.toString()}'
-              : 'Le yaml ${content.firstWhere((element) => element.name.endsWith('.yaml')).name} semble mal formaté. Corrigez-le et rééssayez.',
+          message: kDebugMode ? error.toString() : error.message,
           action: SnackBarAction(label: 'recharger', onPressed: onInit),
         );
-      }
+        return 0;
+      });
+    } catch (e) {
+      return 0;
     }
-    return count;
   }
 }

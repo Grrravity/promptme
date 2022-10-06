@@ -10,14 +10,15 @@ import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:promptme/core/helper/toaster.dart';
 import 'package:promptme/domain/entities/projects.dart';
+import 'package:promptme/infrastructure/services/yaml_mixin.dart';
 import 'package:record/record.dart';
 import 'package:string_extensions/string_extensions.dart';
-import 'package:yaml/yaml.dart';
-import 'package:yaml_edit/yaml_edit.dart';
 
-class PrepareController extends GetxController with StateMixin<RxStatus> {
+class PrepareController extends GetxController
+    with StateMixin<RxStatus>, YamlMixin {
   RxString dir = ''.obs;
   RxList<ProjectsSnapshot> projects = <ProjectsSnapshot>[].obs;
+  late ProjectsSnapshot yamlFile;
   RxList<String> prompteur = <String>[].obs;
   RxInt wordCount = 0.obs;
   String yamlName = '';
@@ -49,8 +50,9 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
       if (exist) {
         dir.value = path;
         projects.value = await getContent(directory);
-        extracts.value = countInput(projects);
-        await getPrompt();
+        getYaml();
+        countInput();
+        getPrompt();
         countWordInText();
       }
       change(null, status: RxStatus.success());
@@ -80,64 +82,43 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
     );
   }
 
-  int countInput(List<ProjectsSnapshot> content) {
-    var count = 0;
-    if (content.any((element) => element.name.endsWith('.yaml'))) {
-      try {
-        final yamlElement =
-            content.firstWhere((element) => element.name.endsWith('.yaml'));
-
-        final file = File(yamlElement.entity.path);
-        final yamlString = file.readAsStringSync();
-
-        final yamlDoc = loadYamlDocument(yamlString);
-        final yamlContent = yamlDoc.contents;
-        final yaml = yamlContent.value as YamlMap;
-
-        final yamlList = yaml['sections'] as YamlList;
-        count = yamlList.length;
-      } catch (e) {
-        showToast(
-          isSuccess: false,
-          message: kDebugMode
-              ? e.toString()
-              : 'Le yaml semble mal formaté. Corrigez-le et rééssayez',
-          action: SnackBarAction(label: 'recharger', onPressed: onInit),
-        );
-      }
-    }
-    return count;
+  void getYaml() {
+    getYamlElement(projects).fold((yamlElement) => yamlFile = yamlElement,
+        (error) {
+      showToast(
+        isSuccess: false,
+        message: kDebugMode ? error.toString() : error.message,
+        action: SnackBarAction(label: 'recharger', onPressed: onInit),
+      );
+      throw error;
+    });
   }
 
-  Future<void> getPrompt() async {
-    if (projects.any((element) => element.name.endsWith('.yaml'))) {
-      try {
-        final yamlElement =
-            projects.firstWhere((element) => element.name.endsWith('.yaml'));
-        yamlName = yamlElement.name;
+  void countInput() {
+    countYamlInput(yamlFile).fold((count) => extracts.value = count, (error) {
+      showToast(
+        isSuccess: false,
+        message: kDebugMode ? error.toString() : error.message,
+        action: SnackBarAction(label: 'recharger', onPressed: onInit),
+      );
+      throw error;
+    });
+  }
 
-        final file = File(yamlElement.entity.path);
-        final yamlString = await file.readAsString();
-
-        final yamlDoc = loadYamlDocument(yamlString);
-        final yamlContent = yamlDoc.contents;
-        final yaml = yamlContent.value as YamlMap;
-
-        final sections = yaml['sections'] as YamlList;
-        for (final d in sections.nodes) {
-          final content = d.value['text'] as String;
-          prompteur.add(content);
-        }
-      } catch (e) {
-        showToast(
-          isSuccess: false,
-          message: kDebugMode
-              ? e.toString()
-              : 'Le yaml semble mal formaté. Corrigez-le et rééssayez',
-          action: SnackBarAction(label: 'recharger', onPressed: onInit),
-        );
+  void getPrompt() {
+    getYamlPromptText(yamlFile).fold((sections) {
+      for (final d in sections.nodes) {
+        final content = d.value['text'] as String;
+        prompteur.add(content);
       }
-    }
+    }, (error) {
+      showToast(
+        isSuccess: false,
+        message: kDebugMode ? error.toString() : error.message,
+        action: SnackBarAction(label: 'recharger', onPressed: onInit),
+      );
+      throw error;
+    });
   }
 
   List<String> getListWithWordLimit({
@@ -196,37 +177,19 @@ class PrepareController extends GetxController with StateMixin<RxStatus> {
   }
 
   Future<void> updateSlideContent(int index, String text) async {
-    if (projects.any((element) => element.name.endsWith('.yaml'))) {
-      try {
-        final yamlElement =
-            projects.firstWhere((element) => element.name.endsWith('.yaml'));
-        yamlName = yamlElement.name;
-
-        final file = File(yamlElement.entity.path);
-        final yamlString = await file.readAsString();
-
-        final yamlEditor = YamlEditor(yamlString);
-
-        final node = YamlScalar.wrap(
-          text.replaceAllMapped('\n', (match) => ''),
-          style: ScalarStyle.LITERAL,
-        );
-        yamlEditor.update(['sections', index, 'text'], node);
-        await file.writeAsString(
-          yamlEditor.toString().replaceAllMapped('|-', (match) => '|'),
-        );
+    await updateYamlContent(yamlFile, text, index).then(
+      (value) => value.fold((sections) {
         prompteur.value = [];
-      } catch (e) {
+      }, (error) {
         showToast(
           isSuccess: false,
-          message: kDebugMode
-              ? e.toString()
-              : "L'écriture de vos modification a échouée. Verifiez votre fichier yaml et réessayez.",
+          message: kDebugMode ? error.toString() : error.message,
           action: SnackBarAction(label: 'recharger', onPressed: onInit),
         );
-      }
-    }
-    await getPrompt();
+        throw error;
+      }),
+    );
+    getPrompt();
     countWordInText();
     Get.back();
     toggleEdition();
