@@ -44,16 +44,17 @@ class Toast extends SnackBar {
     required super.duration,
     super.action,
     super.behavior,
-  }) : super(
-          backgroundColor: secondaryLight,
-        );
+    super.backgroundColor,
+  });
 
   factory Toast.success({
     required String message,
     Duration duration = _snackBarDisplayDuration,
     SnackBarAction? action,
+    Color backgroundColor = secondaryLight,
   }) {
     return Toast._(
+      backgroundColor: backgroundColor,
       content: Row(
         children: [
           _iconSucces,
@@ -74,8 +75,10 @@ class Toast extends SnackBar {
     required String message,
     Duration duration = _snackBarDisplayDuration,
     SnackBarAction? action,
+    Color backgroundColor = secondaryLight,
   }) {
     return Toast._(
+      backgroundColor: backgroundColor,
       content: Row(
         children: [
           _iconError,
@@ -106,8 +109,10 @@ class Toast extends SnackBar {
     required String message,
     Duration duration = _snackBarDisplayDuration,
     SnackBarAction? action,
+    Color backgroundColor = secondaryLight,
   }) {
     return Toast._(
+      backgroundColor: backgroundColor,
       content: Text(
         message,
       ),
@@ -140,6 +145,7 @@ void showToast({
   required String message,
   SnackBarAction? action,
   Duration duration = _snackBarDisplayDuration,
+  Color backgroundColog = secondaryLight,
 }) {
   if (Get.context != null) {
     if (isSuccess) {
@@ -149,6 +155,7 @@ void showToast({
           message: message,
           action: action,
           duration: duration,
+          backgroundColor: backgroundColog,
         ),
       );
     } else {
@@ -158,6 +165,7 @@ void showToast({
           message: message,
           action: action,
           duration: duration,
+          backgroundColor: backgroundColog,
         ),
       );
     }

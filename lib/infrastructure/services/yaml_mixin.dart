@@ -56,7 +56,7 @@ mixin YamlMixin {
         } catch (e) {
           throw ValueFailure(
             message:
-                'Le fichier yaml semble être mal formaté. Verrifiez que la clée "section" existe',
+                'Le fichier yaml semble être mal formaté. Verrifiez que la clée "sections" existe',
             details: e.toString(),
           );
         }
@@ -83,7 +83,7 @@ mixin YamlMixin {
       return right(
         ValueFailure(
           message:
-              "Erreur d'interprétation du fichier yaml. Veuillez le vérifier",
+              'Le fichier yaml semble être mal formaté. Verrifiez que la clée "sections" existe',
           details: e.toString(),
         ),
       );
@@ -119,7 +119,7 @@ mixin YamlMixin {
     }
     return right(
       ValueFailure(
-        message: 'Erreur inatendue lors de la récupération des prompts',
+        message: 'Erreur inatendue lors la mise à jour du fichier',
       ),
     );
   }

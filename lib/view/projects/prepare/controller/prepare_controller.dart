@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:promptme/core/helper/toaster.dart';
+import 'package:promptme/core/theme/theme_color.dart';
 import 'package:promptme/domain/entities/projects.dart';
 import 'package:promptme/infrastructure/services/yaml_mixin.dart';
 import 'package:record/record.dart';
@@ -86,6 +87,7 @@ class PrepareController extends GetxController
     getYamlElement(projects).fold((yamlElement) => yamlFile = yamlElement,
         (error) {
       showToast(
+        backgroundColog: black,
         isSuccess: false,
         message: kDebugMode ? error.toString() : error.message,
         action: SnackBarAction(label: 'recharger', onPressed: onInit),
@@ -97,6 +99,7 @@ class PrepareController extends GetxController
   void countInput() {
     countYamlInput(yamlFile).fold((count) => extracts.value = count, (error) {
       showToast(
+        backgroundColog: black,
         isSuccess: false,
         message: kDebugMode ? error.toString() : error.message,
         action: SnackBarAction(label: 'recharger', onPressed: onInit),
@@ -108,11 +111,22 @@ class PrepareController extends GetxController
   void getPrompt() {
     getYamlPromptText(yamlFile).fold((sections) {
       for (final d in sections.nodes) {
-        final content = d.value['text'] as String;
-        prompteur.add(content);
+        final content = d.value['texts'] as String?;
+        if (content != null) {
+          prompteur.add(content);
+        }
+      }
+      if (prompteur.isEmpty) {
+        showToast(
+          backgroundColog: black,
+          isSuccess: false,
+          message: 'Le fichier yaml semble ne contenir aucun text',
+          action: SnackBarAction(label: 'recharger', onPressed: onInit),
+        );
       }
     }, (error) {
       showToast(
+        backgroundColog: black,
         isSuccess: false,
         message: kDebugMode ? error.toString() : error.message,
         action: SnackBarAction(label: 'recharger', onPressed: onInit),
@@ -152,6 +166,7 @@ class PrepareController extends GetxController
           );
         } else {
           showToast(
+            backgroundColog: black,
             isSuccess: false,
             message: kDebugMode
                 ? e.toString()
@@ -182,6 +197,7 @@ class PrepareController extends GetxController
         prompteur.value = [];
       }, (error) {
         showToast(
+          backgroundColog: black,
           isSuccess: false,
           message: kDebugMode ? error.toString() : error.message,
           action: SnackBarAction(label: 'recharger', onPressed: onInit),
