@@ -111,7 +111,7 @@ class PrepareController extends GetxController
   void getPrompt() {
     getYamlPromptText(yamlFile).fold((sections) {
       for (final d in sections.nodes) {
-        final content = d.value['texts'] as String?;
+        final content = d.value['text'] as String?;
         if (content != null) {
           prompteur.add(content);
         }
