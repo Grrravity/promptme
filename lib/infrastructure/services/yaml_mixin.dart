@@ -109,6 +109,7 @@ mixin YamlMixin {
       await file.writeAsString(
         yamlEditor.toString().replaceAllMapped('|-', (match) => '|'),
       );
+      return left(null);
     } catch (e) {
       return right(
         ValueFailure(
@@ -117,10 +118,5 @@ mixin YamlMixin {
         ),
       );
     }
-    return right(
-      ValueFailure(
-        message: 'Erreur inatendue lors la mise à jour du fichier',
-      ),
-    );
   }
 }
