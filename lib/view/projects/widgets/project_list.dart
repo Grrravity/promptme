@@ -26,7 +26,12 @@ class ProjectList extends StatelessWidget {
                       TextSpan(
                         text:
                             '${projects[index].extractsDone} mp3 / ${projects[index].extracts} extraits',
-                        style: Get.textTheme.subtitle2,
+                        style: Get.textTheme.subtitle2!.copyWith(
+                          color: (projects[index].extractsDone ?? 0) ==
+                                  (projects[index].extracts ?? 0)
+                              ? green
+                              : black,
+                        ),
                       ),
                     ],
                   )
@@ -68,7 +73,7 @@ class ProjectList extends StatelessWidget {
   IconData getIcon(ProjectsSnapshot project) {
     if (project.hasYaml ?? false) {
       if ((project.isDone ?? false) &&
-          project.extracts == project.extractsDone) {
+          (project.extractsDone ?? 0) >= (project.extracts ?? 0)) {
         return Icons.replay_rounded;
       } else {
         return Icons.play_arrow_rounded;
@@ -80,8 +85,11 @@ class ProjectList extends StatelessWidget {
 
   Color getColor(ProjectsSnapshot project) {
     if (project.hasYaml ?? false) {
-      if (project.isDone ?? false) {
+      if ((project.isDone ?? false) &&
+          (project.extractsDone ?? 0) >= (project.extracts ?? 0)) {
         return orangeChart;
+      } else if (project.isDone ?? false) {
+        return blueChart;
       } else {
         return green;
       }

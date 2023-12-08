@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "settings": {
+      "dart.flutterSdkPath": "/Users/grrravity/.asdf/installs/flutter/3.13.0-stable",
+        "files.exclude": {
+          "**/.classpath": true,
+          "**/.project": true,
+          "**/.settings": true,
+          "**/.factorypath": true,
+          "**/*.config.dart": true,
+          "**/*.freezed.dart": true,
+          "**/*.g.dart": true,
+          "**/*.mocks.dart": true,
+          "**/*.gr.dart": true,
+      },
+    },
+    "configurations": [
+        {
+            "name": "Macos (current device)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "lib/main.dart",
+            "args": [
+                "-d","macOS",
+              //"--flavor",
+              //"recette",
+              "--target",
+              "lib/main.dart"
+            ],
+            //"toolArgs": [
+            //  "--dart-define=env=inte",
+            //]
+          },
+    ]
+}

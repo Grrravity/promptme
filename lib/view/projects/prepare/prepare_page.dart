@@ -7,6 +7,7 @@ import 'package:path/path.dart';
 import 'package:promptme/core/theme/theme_color.dart';
 import 'package:promptme/core/widgets/empty_widget.dart';
 import 'package:promptme/core/widgets/error_widget.dart';
+import 'package:promptme/view/projects/controller/project_controller.dart';
 import 'package:promptme/view/projects/prepare/controller/prepare_controller.dart';
 import 'package:promptme/view/projects/prepare/widget/prompteur_preview.dart';
 import 'package:promptme/view/projects/prepare/widget/settings.dart';
@@ -73,7 +74,11 @@ class PreparePage extends GetView<PrepareController> {
                   color: black,
                 ),
                 // ignore: inference_failure_on_generic_invocation
-                onPressed: Get.back,
+                onPressed: () async {
+                  await controller.onClose();
+                  Get.find<ProjectsController>().onInit();
+                  Get.back();
+                },
               ),
               backgroundColor: Get.theme.bottomAppBarColor,
               title: Obx(() {
@@ -132,7 +137,7 @@ class PreparePage extends GetView<PrepareController> {
                                         width: Get.width,
                                         color: primary.withOpacity(0.2),
                                       ),
-                                    )
+                                    ),
                                   ],
                                 ),
                               ),
@@ -226,7 +231,7 @@ class PreparePage extends GetView<PrepareController> {
                       child: const Tooltip(
                         message: 'Raccourci : touche "S"',
                         child: Icon(
-                          Icons.fast_rewind_rounded,
+                          Icons.stop,
                           color: white,
                           size: 38,
                         ),
@@ -252,7 +257,7 @@ class PreparePage extends GetView<PrepareController> {
                       child: const Tooltip(
                         message: 'Raccourci : touche "P"',
                         child: Icon(
-                          Icons.fast_rewind_rounded,
+                          Icons.pause,
                           color: primary,
                           size: 38,
                         ),
@@ -265,7 +270,7 @@ class PreparePage extends GetView<PrepareController> {
                       child: const Tooltip(
                         message: 'Raccourci : touche "P"',
                         child: Icon(
-                          Icons.fast_rewind_rounded,
+                          Icons.forward,
                           color: primary,
                           size: 38,
                         ),
@@ -278,7 +283,7 @@ class PreparePage extends GetView<PrepareController> {
                       child: const Tooltip(
                         message: 'Raccourci : touche "T"',
                         child: Icon(
-                          Icons.fast_rewind_rounded,
+                          Icons.stop,
                           color: primary,
                           size: 38,
                         ),

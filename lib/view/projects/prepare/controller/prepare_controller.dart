@@ -34,7 +34,7 @@ class PrepareController extends GetxController
   RxBool isPauseRecording = false.obs;
   RxBool isEditEnabled = false.obs;
 
-  final recorder = Record();
+  final recorder = AudioRecorder();
 
   @override
   void onInit() {
@@ -300,11 +300,11 @@ class PrepareController extends GetxController
       final date =
           DateFormat('yyyy-MM-dd_HH-mm-ss-SSSS').format(DateTime.now());
       await recorder.start(
+        const RecordConfig(),
         path: projects.first.entity.path.replaceAllMapped(
           projects.first.name,
           (match) => 'promptme_rec_$date.m4a',
         ),
-        numChannels: 1,
       );
     }
   }
@@ -341,5 +341,10 @@ class PrepareController extends GetxController
 
   void retry() {
     onInit();
+  }
+
+  @override
+  Future<void> onClose() async {
+    await recorder.dispose();
   }
 }

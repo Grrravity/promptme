@@ -124,7 +124,11 @@ class ProjectsController extends GetxController
   }
 
   bool checkDone(List<ProjectsSnapshot> content) {
-    if (content.any((element) => element.name.endsWith('.aup3'))) {
+    if (content.any(
+      (element) =>
+          element.name.contains('promptme_rec_') &&
+          element.name.endsWith('.m4a'),
+    )) {
       return true;
     } else {
       return false;
